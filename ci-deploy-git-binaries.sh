@@ -47,7 +47,7 @@ info "binaries directory ${BINARIES_DIRECTORY}"
 info "binaries message ${BINARIES_COMMIT_MESSAGE_FILE}"
 info "git branch ${GIT_BRANCH_NAME}"
 info "git target ${GIT_TARGET_REPOS}"
-info "git version cod file ${GIT_VERSION_CODE_FILE}"
+info "git version code file ${GIT_VERSION_CODE_FILE}"
 info "git target url ${GIT_TARGET_URL}"
 info "cloning binaries"
 
