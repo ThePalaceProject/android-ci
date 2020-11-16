@@ -27,6 +27,8 @@ fi
 WORKING_DIRECTORY=$(pwd) ||
   fatal "could not determine working directory"
 
+GIT_BRANCH_NAME=$(head -n 1 ".ci-local/deploy-git-binary-branch.conf") ||
+  fatal "could not read .ci-local/deploy-git-branch.conf"
 GIT_TARGET_REPOS=$(head -n 1 ".ci-local/deploy-git-binary-target.conf") ||
   fatal "could not read .ci-local/deploy-git-target.conf"
 GIT_VERSION_CODE_FILE=$(head -n 1 ".ci-local/deploy-git-binary-version-file.conf") ||
@@ -39,7 +41,7 @@ info "cloning binaries"
 git clone \
   --depth 1 \
   --single-branch \
-  --branch SimplyE \
+  --branch "${GIT_BRANCH_NAME}" \
   "${GIT_TARGET_URL}" \
   ".binaries" ||
   fatal "could not clone binaries"
