@@ -51,11 +51,11 @@ case ${VERSION_TYPE} in
     exit 0
     ;;
   snapshot)
-    ci-deploy-central-snapshot.sh
+    ci-deploy-central-snapshot.sh "${VERSION_NAME}"
     ci-deploy-git-binaries.sh
     ;;
   tag)
-    ci-deploy-central-release.sh
+    ci-deploy-central-release.sh "${VERSION_NAME}"
     ci-deploy-git-binaries.sh
     ;;
 esac
