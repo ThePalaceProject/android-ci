@@ -54,13 +54,13 @@ cd ".binaries" ||
 git rm -f *.apk ||
   fatal "could not remove old APKs"
 git rm -f build.properties ||
-fatal "could not remove old build properties"
+  fatal "could not remove old build properties"
 
 cd "${WORKING_DIRECTORY}" ||
   fatal "could not restore working directory"
 
-find . -wholename '*/build/outputs/apk/release/*.apk' -exec cp -v {} "${BINARIES_DIRECTORY}" \;
-find . -wholename '*/build/outputs/apk/debug/*.apk' -exec cp -v {} "${BINARIES_DIRECTORY}" \;
+find . -wholename '*/build/outputs/apk/release/*.apk' -exec cp -v {} ".binaries" \;
+find . -wholename '*/build/outputs/apk/debug/*.apk' -exec cp -v {} ".binaries" \;
 
 cd ".binaries" ||
   fatal "could not switch to binaries directory"
