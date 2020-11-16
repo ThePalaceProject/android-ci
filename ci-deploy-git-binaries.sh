@@ -81,6 +81,12 @@ cd "${BINARIES_DIRECTORY}" ||
 
 git add *.apk ||
   fatal "could not add APKs to index"
+
+git config --global user.email "ci@librarysimplified.org" ||
+  fatal "could not configure git"
+git config --global user.name "Library Simplified CI" ||
+  fatal "could not configure git"
+
 git commit --file="${BINARIES_COMMIT_MESSAGE_FILE}" ||
   fatal "could not commit"
 git push --force ||
