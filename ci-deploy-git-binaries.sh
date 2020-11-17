@@ -67,8 +67,7 @@ cd "${BINARIES_DIRECTORY}" ||
 
 git rm -f *.apk ||
   fatal "could not remove old APKs"
-git rm -f build.properties ||
-  fatal "could not remove old build properties"
+git rm -f build.properties
 
 cd "${WORKING_DIRECTORY}" ||
   fatal "could not restore working directory"
