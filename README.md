@@ -7,6 +7,13 @@ The NYPL's [Library Simplified](http://www.librarysimplified.org/) CI scripts.
 
 _Image by [Nowaja](https://pixabay.com/users/nowaja-9363663/) from [Pixabay](https://pixabay.com/photos/handicraft-weaving-loom-wool-work-4388501/)_
 
+|Project|Status|
+|-------|------|
+|[Simplified-Android-SimplyE](https://www.github.com/NYPL-Simplified/Simplified-Android-SimplyE)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-SimplyE/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-SimplyE/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
+|[Simplified-Android-Core](https://www.github.com/NYPL-Simplified/Simplified-Android-Core)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-Core/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-Core/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
+|[Simplified-Android-HTTP](https://www.github.com/NYPL-Simplified/Simplified-Android-HTTP)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-HTTP/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-HTTP/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
+|[audiobook-android](https://www.github.com/NYPL-Simplified/audiobook-android)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/audiobook-android/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/audiobook-android/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
+
 ### What Is This?
 
 The contents of this repository define the CI scripts used to continuously
@@ -223,12 +230,3 @@ wget "https://user:${SECRET_SITE_PASSWORD}@example.com/secret.txt" ||
 cp secret.txt app/src/main/assets/secret.txt ||
   fatal "could not copy secret"
 ```
-
-### Status
-
-|Project|Status|
-|-------|------|
-|[Simplified-Android-SimplyE](https://www.github.com/NYPL-Simplified/Simplified-Android-SimplyE)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-SimplyE/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-SimplyE/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[Simplified-Android-Core](https://www.github.com/NYPL-Simplified/Simplified-Android-Core)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-Core/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-Core/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[Simplified-Android-HTTP](https://www.github.com/NYPL-Simplified/Simplified-Android-HTTP)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-HTTP/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-HTTP/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[audiobook-android](https://www.github.com/NYPL-Simplified/audiobook-android)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/audiobook-android/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/audiobook-android/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
