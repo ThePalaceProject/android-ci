@@ -190,6 +190,12 @@ The possible configuration files are as follows:
 |`.ci-local/deploy-git-binary-version-file.conf` |The first line of this file gives the name of the file containing a `versionCode` property indicating the version of the build APK files|
 |`.ci-local/deploy-git-binary-branch.conf`|The first line of this file gives the name of the branch to which binaries will be committed|
 
+### Deploy Hook
+
+If the file `.ci-local/deploy.sh` exists, it will be executed after all deployments
+have been occurred in `normal` builds. This script allows for, for example, notifying
+external services of the build results.
+
 ### Credentials Hook
 
 If the file `.ci-local/credentials.sh` exists, it will be executed after the build

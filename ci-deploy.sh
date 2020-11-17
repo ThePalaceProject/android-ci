@@ -51,11 +51,24 @@ case ${VERSION_TYPE} in
     exit 0
     ;;
   snapshot)
-    ci-deploy-central-snapshot.sh "${VERSION_NAME}"
-    ci-deploy-git-binaries.sh
+    ci-deploy-central-snapshot.sh "${VERSION_NAME}" ||
+      fatal "could not deploy snapshot"
+    ci-deploy-git-binaries.sh ||
+      fatal "could not deploy git binaries"
     ;;
   tag)
-    ci-deploy-central-release.sh "${VERSION_NAME}"
-    ci-deploy-git-binaries.sh
+    ci-deploy-central-release.sh "${VERSION_NAME}" ||
+      fatal "could not deploy release"
+    ci-deploy-git-binaries.sh ||
+      fatal "could not deploy git binaries"
     ;;
 esac
+
+#------------------------------------------------------------------------
+# Run local deploy hooks if present.
+#
+
+if [ -f .ci-local/deploy.sh ]
+then
+  .ci-local/deploy.sh || fatal "local deploy hook failed"
+fi
