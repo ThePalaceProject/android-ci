@@ -193,8 +193,8 @@ The possible configuration files are as follows:
 ### Deploy Hook
 
 If the file `.ci-local/deploy.sh` exists, it will be executed after all deployments
-have been occurred in `normal` builds. This script allows for, for example, notifying
-external services of the build results.
+have executed successfully in `normal` builds. This script allows for, for example, telling
+external services that new builds are available.
 
 ### Credentials Hook
 
