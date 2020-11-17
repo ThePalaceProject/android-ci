@@ -72,8 +72,7 @@ git rm -f build.properties
 cd "${WORKING_DIRECTORY}" ||
   fatal "could not restore working directory"
 
-find . -wholename '*/build/outputs/apk/release/*.apk' -exec cp -v {} "${BINARIES_DIRECTORY}" \;
-find . -wholename '*/build/outputs/apk/debug/*.apk' -exec cp -v {} "${BINARIES_DIRECTORY}" \;
+find . -wholename '*/build/outputs/apk/*/*.apk' -exec cp -v {} "${BINARIES_DIRECTORY}" \;
 
 cd "${BINARIES_DIRECTORY}" ||
   fatal "could not switch to binaries directory"
