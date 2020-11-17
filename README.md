@@ -147,6 +147,14 @@ jobs:
         run: .ci/ci-main.sh pull-request
 ```
 
+Any produced `aar` and `jar` files produced during the build are automatically published
+to Maven Central. Specifically, iff the current git commit has a tag and the version number
+does not end with `-SNAPSHOT`, then a full staging workflow will be executed and the binaries
+will be published to the Maven Central repository. Iff the current git commit does not have
+a tag, and the version number ends with `-SNAPSHOT`, then the binaries will be published to
+the volatile Sonatype Snapshots repository. For untagged, non `-SNAPSHOT` versions, nothing
+is published to Maven Central.
+
 ### Environment Variables
 
 The build scripts require the following environment variables to be defined when executing
