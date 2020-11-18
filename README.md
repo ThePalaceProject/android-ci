@@ -41,7 +41,7 @@ at the root of the project. Most projects will not need to define any configurat
 information. The scripts in `.ci` contain _no user-serviceable parts_.
 
 The CI scripts only know how to build [Gradle](https://www.gradle.org) projects as,
-unfortunately, this is the only supported build system for use in Android project.
+unfortunately, this is the only supported build system for use in Android projects.
 The CI scripts expect your Gradle project to define the following tasks:
 
 |Task                      |Description|
