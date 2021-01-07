@@ -7,7 +7,7 @@ The NYPL's [Library Simplified](http://www.librarysimplified.org/) CI scripts.
 
 _Image by [Nowaja](https://pixabay.com/users/nowaja-9363663/) from [Pixabay](https://pixabay.com/photos/handicraft-weaving-loom-wool-work-4388501/)_
 
-|Project|Status|
+|Build  |Status|
 |-------|------|
 |[Simplified-Android-Core](https://www.github.com/NYPL-Simplified/Simplified-Android-Core)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-Core/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-Core/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
 |[Simplified-Android-HTTP](https://www.github.com/NYPL-Simplified/Simplified-Android-HTTP)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-HTTP/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-HTTP/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
