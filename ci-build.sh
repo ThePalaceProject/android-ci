@@ -43,7 +43,7 @@ case ${BUILD_TYPE} in
       -Dorg.gradle.daemon=false \
       -Dorg.gradle.parallel=false \
       -Dorg.gradle.internal.publish.checksums.insecure=true \
-      ktlint assembleDebug test verifySemanticVersioning || fatal "could not build"
+      ktlint assembleDebug testDebug verifySemanticVersioning || fatal "could not build"
 
     ./gradlew \
       -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
@@ -60,6 +60,6 @@ case ${BUILD_TYPE} in
       -Dorg.gradle.daemon=false \
       -Dorg.gradle.parallel=false \
       -Dorg.gradle.internal.publish.checksums.insecure=true \
-      ktlint assembleDebug test verifySemanticVersioning || fatal "could not build"
+      ktlint assembleDebug testDebug verifySemanticVersioning || fatal "could not build"
     ;;
 esac

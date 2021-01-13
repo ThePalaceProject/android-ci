@@ -49,7 +49,8 @@ The CI scripts expect your Gradle project to define the following tasks:
 |`clean`                   |Deletes all build artifacts to guarantee a clean build|
 |`assembleDebug`           |Builds all artifacts in `debug` mode|
 |`assembleRelease`         |Builds all artifacts in `release` mode|
-|`test`                    |Runs all tests|
+|`testDebug`               |Runs all tests in `debug` mode|
+|`testRelease`             |Runs all tests in `release` mode|
 |`ktlint`                  |Executes [ktlint](https://ktlint.github.io/) to check code style|
 |`verifySemanticVersioning`|Runs semantic versioning checks|
 
