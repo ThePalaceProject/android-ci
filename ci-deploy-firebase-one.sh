@@ -57,6 +57,10 @@ CI_FIREBASE_GROUPS=$(head -n 1 "firebase-groups.conf") ||
 ci-changelog.sh "${START_DIRECTORY}/changelog.jar" "${START_DIRECTORY}/README-CHANGES.xml" > changes.txt ||
   fatal "could not generate changelog"
 
+info "firebase: APK:    ${CI_FIREBASE_APK}"
+info "firebase: app:    ${CI_FIREBASE_APP_ID}"
+info "firebase: groups: ${CI_FIREBASE_GROUPS}"
+
 exec "${CI_FIREBASE}" appdistribution:distribute \
   "${CI_FIREBASE_APK}" \
   --token "${CI_FIREBASE_TOKEN}" \
