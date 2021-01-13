@@ -26,5 +26,5 @@ info "installing node modules"
 npm install firebase-tools ||
   fatal "could not install node modules"
 
-head -n 1 ".ci/credentials/Firebase/token.txt" ||
+CI_FIREBASE_TOKEN=$(head -n 1 ".ci/credentials/Firebase/token.txt") ||
   fatal "could not read firebase token from credentials repository"
