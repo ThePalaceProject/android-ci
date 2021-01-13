@@ -206,6 +206,19 @@ The possible configuration files are as follows:
 |`.ci-local/deploy-git-binary-version-file.conf` |The first line of this file gives the name of the file containing a `versionCode` property indicating the version of the build APK files|
 |`.ci-local/deploy-git-binary-branch.conf`|The first line of this file gives the name of the branch to which binaries will be committed|
 
+### Firebase Publishing
+
+If the file `.ci-local/deploy-firebase-apps.conf` exists, each line of the file that does
+not begin with a '#' character is interpreted as the name of a Gradle submodule that contains
+an application to be deployed to [Firebase](https://firebase.google.com/). The submodule
+must contain the following files:
+
+|File|Description|
+|----|-----------|
+|`firebase-apk.conf`|The name of the APK file to be deployed (such as `org.librarysimplified.testing.app/build/outputs/apk/release/org.librarysimplified.testing.app-release-unsigned.apk`)|
+|`firebase-app-id.conf`|The application ID to be deployed (such as `1:1076330259269:android:8cb4dc8d0e14bc32d3d42c`)|
+|`firebase-groups.conf`|The name(s) of the testing group(s) to notify (such as `beta-testers`)|
+
 ### Deploy Hook
 
 If the file `.ci-local/deploy.sh` exists, it will be executed after all deployments

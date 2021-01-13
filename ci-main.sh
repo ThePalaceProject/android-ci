@@ -21,7 +21,10 @@ fi
 BUILD_TYPE="$1"
 shift
 
-export PATH="${PATH}:.ci:."
+CI_BIN_DIRECTORY=$(realpath .ci) ||
+  fatal "could not determine bin directory"
+
+export PATH="${PATH}:${CI_BIN_DIRECTORY}:."
 
 case ${BUILD_TYPE} in
   pull-request)

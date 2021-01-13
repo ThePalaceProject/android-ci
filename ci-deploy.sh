@@ -65,6 +65,19 @@ case ${VERSION_TYPE} in
 esac
 
 #------------------------------------------------------------------------
+# Run Firebase if configured.
+#
+
+if [ -f ".ci-local/deploy-firebase-apps.conf" ]
+then
+  FIREBASE_APPLICATIONS=$(egrep -v '^#' ".ci-local/deploy-firebase-apps.conf") ||
+    fatal "could not list firebase applications"
+
+  ci-deploy-firebase.sh "${FIREBASE_APPLICATIONS}" ||
+    fatal "could not deploy firebase builds"
+fi
+
+#------------------------------------------------------------------------
 # Run local deploy hooks if present.
 #
 
