@@ -28,6 +28,14 @@ fi
 
 PROJECT_LIST="$1"
 
+CI_BIN_DIRECTORY=$(realpath .ci) ||
+  fatal "could not determine bin directory"
+
+export PATH="${PATH}:${CI_BIN_DIRECTORY}:."
+
+ci-deploy-firebase-install.sh ||
+  fatal "could not install Firebase"
+
 NODE_MODULES_BIN=$(realpath node_modules/.bin) ||
   fatal "node modules are not installed"
 
