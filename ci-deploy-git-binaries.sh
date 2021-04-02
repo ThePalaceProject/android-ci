@@ -40,7 +40,7 @@ GIT_VERSION_CODE_FILE=$(head -n 1 ".ci-local/deploy-git-binary-version-file.conf
 
 GIT_VERSION_CODE_FILE="${WORKING_DIRECTORY}/${GIT_VERSION_CODE_FILE}"
 
-GIT_TARGET_URL="https://${NYPL_GITHUB_ACCESS_TOKEN}@github.com/${GIT_TARGET_REPOS}"
+GIT_TARGET_URL="https://${CI_GITHUB_ACCESS_TOKEN}@github.com/${GIT_TARGET_REPOS}"
 
 info "working directory ${WORKING_DIRECTORY}"
 info "binaries directory ${BINARIES_DIRECTORY}"
@@ -80,9 +80,9 @@ cd "${BINARIES_DIRECTORY}" ||
 git add *.apk ||
   fatal "could not add APKs to index"
 
-git config --global user.email "ci@librarysimplified.org" ||
+git config --global user.email "ci@lyrasis.org" ||
   fatal "could not configure git"
-git config --global user.name "Library Simplified CI" ||
+git config --global user.name "LYRASIS CI" ||
   fatal "could not configure git"
 
 git commit --file="${BINARIES_COMMIT_MESSAGE_FILE}" ||
