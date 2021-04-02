@@ -47,8 +47,7 @@ info "Version to be deployed is ${VERSION_NAME}"
 
 case ${VERSION_TYPE} in
   none)
-    info "Current version is not a snapshot, and there is no tag. Exiting."
-    exit 0
+    info "Current version is not a snapshot, and there is no tag"
     ;;
   snapshot)
     ci-deploy-central-snapshot.sh "${VERSION_NAME}" ||
