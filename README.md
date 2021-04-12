@@ -83,6 +83,7 @@ The `ci-main.sh` script therefore defines the following build types:
 |--------|-----------|
 |`normal`|This is a normal build of code that has been reviewed. The build will be granted full access to secrets. The artifacts produced will be published to various locations.|
 |`pull-request`|This is a build of a pull request. The build will proceed without access to secrets, and any build artifacts produced will _not_ be published.|
+|`setup-only`|This does all of the work of setting up for building, but does not actually build anything. The build will be granted full access to secrets.|
 
 Using [GitHub Actions](https://github.com/features/actions) as an example,
 the intention is that projects will define a pair of _workflows_ `A` and `B`.
