@@ -27,6 +27,15 @@ CI_BIN_DIRECTORY=$(realpath .ci) ||
 export PATH="${PATH}:${CI_BIN_DIRECTORY}:."
 
 case ${BUILD_TYPE} in
+  setup-only)
+    info "Building in setup-only mode"
+    info "Credentials will be used"
+    info "No builds will be produced"
+    info "Builds will not be deployed"
+
+    ci-credentials.sh || fatal "Could not set up credentials"
+    ;;
+
   pull-request)
     info "Building in pull-request mode"
     info "Credentials will not be used"
