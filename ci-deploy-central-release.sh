@@ -9,13 +9,13 @@
 
 fatal()
 {
-  echo "ci-deploy-central-snapshot.sh: fatal: $1" 1>&2
+  echo "ci-deploy-central-release.sh: fatal: $1" 1>&2
   exit 1
 }
 
 info()
 {
-  echo "ci-deploy-central-snapshot.sh: info: $1" 1>&2
+  echo "ci-deploy-central-release.sh: info: $1" 1>&2
 }
 
 if [ $# -ne 1 ]
