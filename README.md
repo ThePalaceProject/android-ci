@@ -250,3 +250,10 @@ wget "https://user:${SECRET_SITE_PASSWORD}@example.com/secret.txt" ||
 cp secret.txt app/src/main/assets/secret.txt ||
   fatal "could not copy secret"
 ```
+
+If the file `.ci-local/credentials-fake.sh` exists, it will be executed before the code
+is built in `pull-request` builds. This script allows for setting up any fake credentials
+that might be required. For example, most projects that produce APK files will require
+_some_ kind of keystore for APK signing, even if the APK is never deployed. The 
+`.ci-local/credentials-fake.sh` script can be used to set up a temporary keystore that is
+simply discarded at the end of the build.

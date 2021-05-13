@@ -41,6 +41,7 @@ case ${BUILD_TYPE} in
     info "Credentials will not be used"
     info "Builds will not be deployed"
 
+    ci-credentials-fake.sh || fatal "Could not set up fake credentials"
     ci-build.sh pull-request || fatal "Could not build"
     ;;
 
