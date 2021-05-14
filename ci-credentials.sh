@@ -53,7 +53,7 @@ info "Cloning credentials"
 
 git clone \
   --depth 1 \
-  "https://${CI_GITHUB_ACCESS_TOKEN}@github.com/lyrasis/simplye-certificates" \
+  "https://${CI_GITHUB_ACCESS_TOKEN}@github.com/ThePalaceProject/mobile-certificates" \
   ".ci/credentials" || fatal "Could not clone credentials"
 
 #------------------------------------------------------------------------

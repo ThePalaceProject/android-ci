@@ -80,9 +80,9 @@ cd "${BINARIES_DIRECTORY}" ||
 git add *.apk ||
   fatal "could not add APKs to index"
 
-git config --global user.email "ci@lyrasis.org" ||
+git config --global user.email "palace.ci@thepalaceproject.org" ||
   fatal "could not configure git"
-git config --global user.name "LYRASIS CI" ||
+git config --global user.name "Palace CI" ||
   fatal "could not configure git"
 
 git commit --file="${BINARIES_COMMIT_MESSAGE_FILE}" ||
