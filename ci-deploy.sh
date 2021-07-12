@@ -50,14 +50,14 @@ case ${VERSION_TYPE} in
     info "Current version is not a snapshot, and there is no tag"
     ;;
   snapshot)
-    # ci-deploy-central-snapshot.sh "${VERSION_NAME}" ||
-    #   fatal "could not deploy snapshot"
+    ci-deploy-central-snapshot.sh "${VERSION_NAME}" ||
+      fatal "could not deploy snapshot"
     ci-deploy-git-binaries.sh ||
       fatal "could not deploy git binaries"
     ;;
   tag)
-    # ci-deploy-central-release.sh "${VERSION_NAME}" ||
-    #   fatal "could not deploy release"
+    ci-deploy-central-release.sh "${VERSION_NAME}" ||
+      fatal "could not deploy release"
     ci-deploy-git-binaries.sh ||
       fatal "could not deploy git binaries"
     ;;

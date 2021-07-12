@@ -24,22 +24,22 @@ info()
 # Check environment
 #
 
-# if [ -z "${MAVEN_CENTRAL_USERNAME}" ]
-# then
-#   fatal "MAVEN_CENTRAL_USERNAME is not defined"
-# fi
-# if [ -z "${MAVEN_CENTRAL_PASSWORD}" ]
-# then
-#   fatal "MAVEN_CENTRAL_PASSWORD is not defined"
-# fi
-# if [ -z "${MAVEN_CENTRAL_STAGING_PROFILE_ID}" ]
-# then
-#   fatal "MAVEN_CENTRAL_STAGING_PROFILE_ID is not defined"
-# fi
-# if [ -z "${MAVEN_CENTRAL_SIGNING_KEY_ID}" ]
-# then
-#   fatal "MAVEN_CENTRAL_SIGNING_KEY_ID is not defined"
-# fi
+if [ -z "${MAVEN_CENTRAL_USERNAME}" ]
+then
+  fatal "MAVEN_CENTRAL_USERNAME is not defined"
+fi
+if [ -z "${MAVEN_CENTRAL_PASSWORD}" ]
+then
+  fatal "MAVEN_CENTRAL_PASSWORD is not defined"
+fi
+if [ -z "${MAVEN_CENTRAL_STAGING_PROFILE_ID}" ]
+then
+  fatal "MAVEN_CENTRAL_STAGING_PROFILE_ID is not defined"
+fi
+if [ -z "${MAVEN_CENTRAL_SIGNING_KEY_ID}" ]
+then
+  fatal "MAVEN_CENTRAL_SIGNING_KEY_ID is not defined"
+fi
 if [ -z "${CI_GITHUB_ACCESS_TOKEN}" ]
 then
   fatal "CI_GITHUB_ACCESS_TOKEN is not defined"
@@ -53,7 +53,7 @@ info "Cloning credentials"
 
 git clone \
   --depth 1 \
-  "https://${CI_GITHUB_ACCESS_TOKEN}@github.com/lyrasis/simplye-certificates" \
+  "https://${CI_GITHUB_ACCESS_TOKEN}@github.com/ThePalaceProject/mobile-certificates" \
   ".ci/credentials" || fatal "Could not clone credentials"
 
 #------------------------------------------------------------------------
@@ -61,12 +61,12 @@ git clone \
 # file to check that the key hasn't expired.
 #
 
-# info "Importing GPG key"
-# gpg --import ".ci/credentials/APK Signing/librarySimplified.asc" || fatal "Could not import GPG key"
+info "Importing GPG key"
+gpg --import ".ci/credentials/APK Signing/thePalaceProject.asc" || fatal "Could not import GPG key"
 
-# info "Signing test file"
-# echo "Test" > hello.txt || fatal "Could not create test file"
-# gpg --sign -a hello.txt || fatal "Could not produce test signature"
+info "Signing test file"
+echo "Test" > hello.txt || fatal "Could not create test file"
+gpg --sign -a hello.txt || fatal "Could not produce test signature"
 
 #------------------------------------------------------------------------
 # Download Brooklime if necessary.
