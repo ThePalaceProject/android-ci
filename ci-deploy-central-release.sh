@@ -59,8 +59,10 @@ info "Creating a staging repository on Maven Central"
 
 (cat <<EOF
 create
+--baseURI
+https://s01.oss.sonatype.org/
 --description
-Simplified ${TIMESTAMP}
+ThePalaceProject ${TIMESTAMP}
 --stagingProfileId
 ${MAVEN_CENTRAL_STAGING_PROFILE_ID}
 --user
@@ -80,6 +82,8 @@ info "Uploading content to repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}"
 
 (cat <<EOF
 upload
+--baseURI
+https://s01.oss.sonatype.org/
 --stagingProfileId
 ${MAVEN_CENTRAL_STAGING_PROFILE_ID}
 --user
@@ -104,6 +108,8 @@ info "Closing repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}. This can take a
 
 (cat <<EOF
 close
+--baseURI
+https://s01.oss.sonatype.org/
 --stagingProfileId
 ${MAVEN_CENTRAL_STAGING_PROFILE_ID}
 --user
@@ -125,6 +131,8 @@ info "Releasing repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}"
 
 (cat <<EOF
 release
+--baseURI
+https://s01.oss.sonatype.org/
 --stagingProfileId
 ${MAVEN_CENTRAL_STAGING_PROFILE_ID}
 --user
