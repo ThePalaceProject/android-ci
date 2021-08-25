@@ -10,13 +10,13 @@
 
 fatal()
 {
-  echo "ci-deploy-firebase-one.sh: fatal: $1" 1>&2
+  echo "ci-deploy-firebase-apk.sh: fatal: $1" 1>&2
   exit 1
 }
 
 info()
 {
-  echo "ci-deploy-firebase-one.sh: info: $1" 1>&2
+  echo "ci-deploy-firebase-apk.sh: info: $1" 1>&2
 }
 
 #------------------------------------------------------------------------

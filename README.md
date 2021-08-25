@@ -213,6 +213,7 @@ must contain the following files:
 
 |File|Description|
 |----|-----------|
+|`firebase-aab.conf`|The name of the AAB file to be deployed (such as `org.librarysimplified.testing.app/build/outputs/aab/release/org.librarysimplified.testing.app-release-unsigned.aab`)|
 |`firebase-apk.conf`|The name of the APK file to be deployed (such as `org.librarysimplified.testing.app/build/outputs/apk/release/org.librarysimplified.testing.app-release-unsigned.apk`)|
 |`firebase-app-id.conf`|The application ID to be deployed (such as `1:1076330259269:android:8cb4dc8d0e14bc32d3d42c`)|
 |`firebase-groups.conf`|The name(s) of the testing group(s) to notify (such as `beta-testers`)|
