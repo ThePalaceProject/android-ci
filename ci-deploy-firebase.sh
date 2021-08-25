@@ -50,14 +50,14 @@ for PROJECT in ${PROJECT_LIST}
 do
   info "deploying ${PROJECT}"
 
-  if [ -f "${PROJECT}/firebase-apk.conf" ]
-  then
-    ci-deploy-firebase-apk.sh "${PROJECT}" ||
-      fatal "could not deploy ${PROJECT} APK to Firebase"
-  fi
   if [ -f "${PROJECT}/firebase-aab.conf" ]
   then
     ci-deploy-firebase-aab.sh "${PROJECT}" ||
       fatal "could not deploy ${PROJECT} AAB to Firebase"
+  fi
+  if [ -f "${PROJECT}/firebase-apk.conf" ]
+  then
+    ci-deploy-firebase-apk.sh "${PROJECT}" ||
+      fatal "could not deploy ${PROJECT} APK to Firebase"
   fi
 done
