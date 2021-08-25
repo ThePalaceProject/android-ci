@@ -54,8 +54,7 @@ do
   then
     ci-deploy-firebase-aab.sh "${PROJECT}" ||
       fatal "could not deploy ${PROJECT} AAB to Firebase"
-  fi
-  if [ -f "${PROJECT}/firebase-apk.conf" ]
+  elif [ -f "${PROJECT}/firebase-apk.conf" ]
   then
     ci-deploy-firebase-apk.sh "${PROJECT}" ||
       fatal "could not deploy ${PROJECT} APK to Firebase"
