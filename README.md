@@ -218,6 +218,16 @@ must contain the following files:
 |`firebase-app-id.conf`|The application ID to be deployed (such as `1:1076330259269:android:8cb4dc8d0e14bc32d3d42c`)|
 |`firebase-groups.conf`|The name(s) of the testing group(s) to notify (such as `beta-testers`)|
 
+### Fastlane Publishing
+
+If the file `.ci-local/deploy-fastlane-apps.conf` exists, each line of the file that does
+not begin with a '#' character is interpreted as the name of a Gradle submodule that contains
+an application to be deployed using [Fastlane](https://fastlane.tools/).
+
+|File|Description|
+|----|-----------|
+|    |           |
+
 ### Deploy Hook
 
 If the file `.ci-local/deploy.sh` exists, it will be executed after all deployments

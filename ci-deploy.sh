@@ -77,6 +77,19 @@ then
 fi
 
 #------------------------------------------------------------------------
+# Run Fastlane if configured.
+#
+
+if [ -f ".ci-local/deploy-fastlane-apps.conf" ]
+then
+  FASTLANE_APPLICATIONS=$(egrep -v '^#' ".ci-local/deploy-fastlane-apps.conf") ||
+    fatal "could not list fastlane applications"
+
+  ci-deploy-fastlane.sh "${FASTLANE_APPLICATIONS}" ||
+    fatal "could not deploy fastlane builds"
+fi
+
+#------------------------------------------------------------------------
 # Run local deploy hooks if present.
 #
 
