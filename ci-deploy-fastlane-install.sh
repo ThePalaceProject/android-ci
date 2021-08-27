@@ -21,11 +21,6 @@ info()
 
 #------------------------------------------------------------------------
 
-if [ -z "${GEM_HOME}" ]
-then
-  fatal "GEM_HOME is not defined"
-fi
-
 if [ $# -ne 1 ]
 then
   fatal "usage: project"
@@ -39,8 +34,18 @@ cd "${PROJECT}" ||
 
 info "installing fastlane"
 
+CI_GEM_PATHS=$(gem environment gempaths | sed 's/:/ /g')
+
+for CI_GEM_PATH in ${CI_GEM_PATHS}
+do
+  CI_EXTRA_BIN="${CI_GEM_PATH}/bin"
+  info "adding ${CI_EXTRA_BIN} to PATH"
+  export PATH="${PATH}:${CI_EXTRA_BIN}"
+done
+
 gem install --user-install bundler ||
   fatal "could not install bundler"
+
 bundle install ||
   fatal "could not install fastlane"
 bundle exec fastlane supply init < /dev/null ||

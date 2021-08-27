@@ -31,14 +31,7 @@ PROJECT_LIST="$1"
 CI_BIN_DIRECTORY=$(realpath .ci) ||
   fatal "could not determine bin directory"
 
-export GEM_HOME="${HOME}/gem"
-
-info "installing gems to ${GEM_HOME}"
-
-mkdir -p "${GEM_HOME}/bin" ||
-  fatal "could not create gems directory"
-
-export PATH="${PATH}:${CI_BIN_DIRECTORY}:${GEM_HOME}/bin:."
+export PATH="${PATH}:${CI_BIN_DIRECTORY}:."
 
 info "deploying ${PROJECT_LIST}"
 
