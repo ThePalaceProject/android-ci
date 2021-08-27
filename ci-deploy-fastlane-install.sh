@@ -48,5 +48,5 @@ gem install --user-install bundler ||
 
 bundle install ||
   fatal "could not install fastlane"
-bundle exec fastlane supply init < /dev/null ||
+bundle exec fastlane supply init --track alpha < /dev/null ||
   fatal "could not initialize fastlane supply"
