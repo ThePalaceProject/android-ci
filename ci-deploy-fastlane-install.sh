@@ -34,8 +34,6 @@ cd "${PROJECT}" ||
 
 info "installing fastlane"
 
-gem install bundler ||
-  fatal "could not install bundler"
 bundle install ||
   fatal "could not install fastlane"
 bundle exec fastlane supply init < /dev/null ||
