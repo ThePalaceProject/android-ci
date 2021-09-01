@@ -10,13 +10,13 @@
 
 fatal()
 {
-  echo "ci-deploy-firebase.sh: fatal: $1" 1>&2
+  echo "ci-deploy-fastlane.sh: fatal: $1" 1>&2
   exit 1
 }
 
 info()
 {
-  echo "ci-deploy-firebase.sh: info: $1" 1>&2
+  echo "ci-deploy-fastlane.sh: info: $1" 1>&2
 }
 
 #------------------------------------------------------------------------

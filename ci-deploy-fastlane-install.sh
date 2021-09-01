@@ -35,7 +35,6 @@ cd "${PROJECT}" ||
 info "installing fastlane"
 
 CI_GEM_PATHS=$(gem environment gempaths | sed 's/:/ /g')
-
 for CI_GEM_PATH in ${CI_GEM_PATHS}
 do
   CI_EXTRA_BIN="${CI_GEM_PATH}/bin"
