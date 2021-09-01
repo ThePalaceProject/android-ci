@@ -24,6 +24,8 @@ Android modules.
 
 * Automatic deployment of application binaries to a git repository.
 * Automatic deployment of snapshots and releases to [Maven Central](https://search.maven.org/).
+* Automatic deployment of Android applications to [Firebase](https://firebase.google.com/).
+* Automatic deployment of Android releases to the [Play Store](https://play.google.com/).
 * Build pull requests safely without access to secrets.
 * Zero-configuration in the common case; add a git submodule and go!
 
@@ -168,6 +170,12 @@ a `normal` build. Executing a `pull-request` build does not require any particul
 
 These values should be stored in GitHub Actions _secrets_ and passed in as shown in the
 example workflows above.
+
+### Maven Central Publishing
+
+The CI scripts can be optionally configured to publish APK files to a Git repository. If
+the file `.ci-local/deploy-maven-central.conf` exists, the CI scripts will attempt to
+publish all produced artifacts to Maven Central.
 
 ### APK Git Publishing
 

@@ -23,6 +23,12 @@ then
   fatal "usage: version"
 fi
 
+if [ ! -f ".ci-local/deploy-maven-central.conf" ]
+then
+  info ".ci-local/deploy-maven-central.conf does not exist, will not deploy binaries"
+  exit 0
+fi
+
 #------------------------------------------------------------------------
 # Publish the built artifacts to wherever they need to go.
 #
