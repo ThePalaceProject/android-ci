@@ -47,5 +47,8 @@ gem install --user-install bundler ||
 
 bundle install ||
   fatal "could not install fastlane"
+
+# Fastlane helpfully exits with a non-zero exit code even if it
+# succeeded.
 bundle exec fastlane supply init --track alpha < /dev/null ||
-  fatal "could not initialize fastlane supply"
+  info "fastlane supply exited with code $?"
