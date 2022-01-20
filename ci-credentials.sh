@@ -91,20 +91,7 @@ fi
 # Download changelog if necessary.
 #
 
-CHANGELOG_URL="https://repo1.maven.org/maven2/com/io7m/changelog/com.io7m.changelog.cmdline/4.1.0/com.io7m.changelog.cmdline-4.1.0-main.jar"
-CHANGELOG_SHA256_EXPECTED="2a38beaea7c63349c1243dbee52d97a1d048578d1132dd1b509e2d8d37445033"
-
-wget -O "changelog.jar.tmp" "${CHANGELOG_URL}" || fatal "Could not download changelog"
-mv "changelog.jar.tmp" "changelog.jar" || fatal "Could not rename changelog"
-
-CHANGELOG_SHA256_RECEIVED=$(openssl sha256 "changelog.jar" | awk '{print $NF}') || fatal "Could not checksum changelog.jar"
-
-if [ "${CHANGELOG_SHA256_EXPECTED}" != "${CHANGELOG_SHA256_RECEIVED}" ]
-then
-  fatal "changelog.jar checksum does not match.
-  Expected: ${CHANGELOG_SHA256_EXPECTED}
-  Received: ${CHANGELOG_SHA256_RECEIVED}"
-fi
+ci-install-changelog.sh || fatal "Failed to install changelog"
 
 #------------------------------------------------------------------------
 # Run local credentials hooks if present.

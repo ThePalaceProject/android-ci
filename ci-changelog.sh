@@ -32,7 +32,7 @@ CHANGE_FILE="$1"
 shift
 
 cat <<EOF
-Changes since the last production release:
+Changes since the last release:
 
 EOF
 
