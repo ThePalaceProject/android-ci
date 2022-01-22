@@ -89,7 +89,10 @@ git config --global user.email "palace.ci@thepalaceproject.org" ||
 git config --global user.name "Palace CI" ||
   fatal "Could not configure git"
 
-TAG_NAME="palace-$VERSION_NUM"
+TAG_TEMPLATE=`head -n 1 ".ci-local/tag-template.conf"` ||
+  fatal "Could not read .ci-local/tag-template.conf"
+
+TAG_NAME=`echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/`
 
 if ! git diff --staged --quiet; then
   if [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
@@ -109,7 +112,7 @@ fi
 if ! [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
   info "Tagging release as $TAG_NAME"
 
-  git tag -a "$TAG_NAME" -m "Palace release $VERSION_NUM" ||
+  git tag -a "$TAG_NAME" -m "Release $VERSION_NUM" ||
     fatal "Could not tag release"
   git push origin "$TAG_NAME" ||
     fatal "Could not push release tag"
