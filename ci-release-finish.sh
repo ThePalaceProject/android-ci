@@ -18,6 +18,22 @@ info()
   echo "ci-release-finish.sh: info: $1" 1>&2
 }
 
+#------------------------------------------------------------------------
+
+if [[ $# > 1 || ($# == 1 && "$1" != "--tag") ]]
+then
+  fatal "usage: [--tag]
+"
+fi
+
+if [[ "$1" == "--tag" ]]; then
+  MAKE_TAG=yes
+
+  info "Release will be tagged"
+else
+  MAKE_TAG=no
+fi
+
 CI_BIN_DIRECTORY=$(realpath .ci) ||
   fatal "Could not determine bin directory"
 
@@ -62,6 +78,18 @@ else
   fatal "Project version $VERSION_NUM does not match changelog version $CHANGELOG_VERSION_NUM"
 fi
 
+if [ "$GITHUB_REF_TYPE" = "branch" ]; then
+  RELEASE_BRANCH_NAME_PATTERN='^release/(.*)$'
+
+  if [[ "$GITHUB_REF_NAME" =~ $RELEASE_BRANCH_NAME_PATTERN ]]; then
+    BRANCH_VERSION_NUM=${BASH_REMATCH[1]}
+
+    if ! [ $VERSION_NUM = "$BRANCH_VERSION_NUM" ]; then
+      fatal "Project version $VERSION_NUM does not match release branch version $BRANCH_VERSION_NUM"
+    fi
+  fi
+fi
+
 if [ "$CHANGELOG_STATE" = "open" ]; then
   info "Closing changelog"
 
@@ -89,13 +117,15 @@ git config --global user.email "palace.ci@thepalaceproject.org" ||
 git config --global user.name "Palace CI" ||
   fatal "Could not configure git"
 
-TAG_TEMPLATE=`head -n 1 ".ci-local/tag-template.conf"` ||
-  fatal "Could not read .ci-local/tag-template.conf"
+if [ "$MAKE_TAG" = "yes" ]; then
+  TAG_TEMPLATE=`head -n 1 ".ci-local/tag-template.conf"` ||
+    fatal "Could not read .ci-local/tag-template.conf"
 
-TAG_NAME=`echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/`
+  TAG_NAME=`echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/`
+fi
 
 if ! git diff --staged --quiet; then
-  if [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
+  if [[ "$MAKE_TAG" == "yes" && `git ls-remote --tags origin "$TAG_NAME"` ]]; then
     fatal "Changes are required to finish the release, but the release has already been tagged as $TAG_NAME"
   fi
 
@@ -109,21 +139,23 @@ else
   info "No files changed"
 fi
 
-if ! [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
-  info "Tagging release as $TAG_NAME"
+if [ "$MAKE_TAG" = "yes" ]; then
+  if ! [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
+    info "Tagging release as $TAG_NAME"
 
-  git tag -a "$TAG_NAME" -m "Release $VERSION_NUM" ||
-    fatal "Could not tag release"
-  git push origin "$TAG_NAME" ||
-    fatal "Could not push release tag"
-else
-  git fetch origin "refs/tags/$TAG_NAME"
+    git tag -a "$TAG_NAME" -m "Release $VERSION_NUM" ||
+      fatal "Could not tag release"
+    git push origin "$TAG_NAME" ||
+      fatal "Could not push release tag"
+  else
+    git fetch origin "refs/tags/$TAG_NAME"
 
-  if ! git diff --quiet FETCH_HEAD HEAD; then
-    fatal "The release has already been tagged, but the tag $TAG_NAME differs from the current HEAD"
+    if ! git diff --quiet FETCH_HEAD HEAD; then
+      fatal "The release has already been tagged, but the tag $TAG_NAME differs from the current HEAD"
+    fi
+
+    info "The release has already been tagged"
   fi
-
-  info "The release has already been tagged"
 fi
 
 RELEASE_NOTES_PATH="changes-${VERSION_NUM}.txt"
