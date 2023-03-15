@@ -42,7 +42,7 @@ do
   export PATH="${PATH}:${CI_EXTRA_BIN}"
 done
 
-gem install --user-install bundler ||
+gem install --user-install bundler -v 2.2.25 ||
   fatal "could not install bundler"
 
 bundle install ||
