@@ -33,7 +33,7 @@ fi
 # Publish the built artifacts to wherever they need to go.
 #
 
-DEPLOY_DIRECTORY="$(pwd)/deploy"
+DEPLOY_DIRECTORY="$(pwd)/build/maven"
 info "Artifacts will temporarily be deployed to ${DEPLOY_DIRECTORY}"
 rm -rf "${DEPLOY_DIRECTORY}" || fatal "Could not ensure temporary directory is clean"
 mkdir -p "${DEPLOY_DIRECTORY}" || fatal "Could not create a temporary directory"
