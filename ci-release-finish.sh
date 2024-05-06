@@ -69,13 +69,12 @@ if ! [[ $CHANGELOG_VERSION_NAME =~ $CHANGELOG_VERSION_NAME_PATTERN ]]; then
   fatal "Unable to parse changelog version name $CHANGELOG_VERSION_NAME"
 fi
 
-CHANGELOG_VERSION_NUM=${BASH_REMATCH[1]}
 CHANGELOG_STATE=${BASH_REMATCH[2]}
 
-if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NUM" ]; then
+if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NAME" ]; then
   info "Finishing dev cycle for release ${VERSION_NAME}"
 else
-  fatal "Project version ${VERSION_NAME} does not match changelog version $CHANGELOG_VERSION_NUM"
+  fatal "Project version ${VERSION_NAME} does not match changelog version $CHANGELOG_VERSION_NAME"
 fi
 
 if [ "$GITHUB_REF_TYPE" = "branch" ]; then
