@@ -54,6 +54,8 @@ VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?$'
 VERSION_NAME=$(ci-version.sh) ||
   fatal "Could not determine project version"
 
+info "Project version: ${VERSION_NAME}"
+
 if ! [[ $VERSION_NAME =~ $VERSION_NAME_PATTERN ]]; then
   fatal "Unable to parse project version name $VERSION_NAME"
 fi
@@ -64,8 +66,11 @@ QUALIFIER=${BASH_REMATCH[2]}
 CHANGELOG_VERSION_TEXT=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
   fatal "Could not determine changelog version"
 
-CHANGELOG_VERSION_NAME=$(echo "${CHANGELOG_VERSION_TEXT}" | awk  '{print $1}')
-CHANGELOG_STATE=$(echo "${CHANGELOG_VERSION_TEXT}" | awk  '{print $2}')
+CHANGELOG_VERSION_NAME=$(echo "${CHANGELOG_VERSION_TEXT}" | awk '{print $1}')
+CHANGELOG_STATE=$(echo "${CHANGELOG_VERSION_TEXT}" | awk '{print $2}')
+
+info "Changelog version name: ${CHANGELOG_VERSION_NAME}"
+info "Changelog state: ${CHANGELOG_STATE}"
 
 if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NAME" ]; then
   info "Finishing dev cycle for release ${VERSION_NAME}"
@@ -85,7 +90,7 @@ if [ "$GITHUB_REF_TYPE" = "branch" ]; then
   fi
 fi
 
-if [ "$CHANGELOG_STATE" = "open" ]; then
+if [ "$CHANGELOG_STATE" = "(open)" ]; then
   info "Closing changelog"
 
   java -jar "${CHANGELOG_JAR_NAME}" release-finish --file "${CHANGE_FILE}" ||
