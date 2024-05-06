@@ -61,7 +61,7 @@ fi
 VERSION_NUM=${BASH_REMATCH[1]}
 QUALIFIER=${BASH_REMATCH[2]}
 
-CHANGELOG_VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+) \((.*)\)$'
+CHANGELOG_VERSION_NAME_PATTERN='^(([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?) \((.*)\)$'
 CHANGELOG_VERSION_NAME=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
   fatal "Could not determine changelog version"
 
