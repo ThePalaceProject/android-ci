@@ -72,10 +72,10 @@ fi
 CHANGELOG_VERSION_NUM=${BASH_REMATCH[1]}
 CHANGELOG_STATE=${BASH_REMATCH[2]}
 
-if [ "$VERSION_NUM" = "$CHANGELOG_VERSION_NUM" ]; then
-  info "Finishing dev cycle for release $VERSION_NUM"
+if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NUM" ]; then
+  info "Finishing dev cycle for release ${VERSION_NAME}"
 else
-  fatal "Project version $VERSION_NUM does not match changelog version $CHANGELOG_VERSION_NUM"
+  fatal "Project version ${VERSION_NAME} does not match changelog version $CHANGELOG_VERSION_NUM"
 fi
 
 if [ "$GITHUB_REF_TYPE" = "branch" ]; then
