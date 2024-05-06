@@ -20,20 +20,6 @@ info()
 
 #------------------------------------------------------------------------
 
-if [[ $# > 1 || ($# == 1 && "$1" != "--tag") ]]
-then
-  fatal "usage: [--tag]
-"
-fi
-
-if [[ "$1" == "--tag" ]]; then
-  MAKE_TAG=yes
-
-  info "Release will be tagged"
-else
-  MAKE_TAG=no
-fi
-
 CI_BIN_DIRECTORY=$(realpath .ci) ||
   fatal "Could not determine bin directory"
 
@@ -50,119 +36,71 @@ CHANGE_FILE="README-CHANGES.xml"
 
 #------------------------------------------------------------------------
 
-VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?$'
-VERSION_NAME=$(ci-version.sh) ||
+git config --global user.email "palace.ci@thepalaceproject.org" ||
+  fatal "Could not configure git"
+git config --global user.name "Palace CI" ||
+  fatal "Could not configure git"
+
+PROJECT_VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?$'
+PROJECT_VERSION_NAME=$(ci-version.sh) ||
   fatal "Could not determine project version"
 
-info "Project version: ${VERSION_NAME}"
+info "Project version: ${PROJECT_VERSION_NAME}"
 
-if ! [[ $VERSION_NAME =~ $VERSION_NAME_PATTERN ]]; then
-  fatal "Unable to parse project version name $VERSION_NAME"
+# Check that the project version is in the permitted format.
+if ! [[ "${PROJECT_VERSION_NAME}" =~ ${PROJECT_VERSION_NAME_PATTERN} ]]; then
+  fatal "Unable to parse project version name ${PROJECT_VERSION_NAME}"
 fi
 
-VERSION_NUM=${BASH_REMATCH[1]}
-QUALIFIER=${BASH_REMATCH[2]}
+# Break the version into the number and the qualifier, and reject -SNAPSHOT versions.
+PROJECT_VERSION_NUMBER=${BASH_REMATCH[1]}
+PROJECT_VERSION_QUALIFIER=${BASH_REMATCH[2]}
 
-CHANGELOG_VERSION_TEXT=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
-  fatal "Could not determine changelog version"
-
-CHANGELOG_VERSION_NAME=$(echo "${CHANGELOG_VERSION_TEXT}" | awk '{print $1}')
-CHANGELOG_STATE=$(echo "${CHANGELOG_VERSION_TEXT}" | awk '{print $2}')
-
-info "Changelog version name: ${CHANGELOG_VERSION_NAME}"
-info "Changelog state: ${CHANGELOG_STATE}"
-
-if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NAME" ]; then
-  info "Finishing dev cycle for release ${VERSION_NAME}"
-else
-  fatal "Project version ${VERSION_NAME} does not match changelog version $CHANGELOG_VERSION_NAME"
+if [ "${PROJECT_VERSION_QUALIFIER}" = "-SNAPSHOT" ]
+then
+  fatal "${PROJECT_VERSION_QUALIFIER} is -SNAPSHOT; please set the proper release version in gradle.properties"
 fi
 
+# Check that the current branch is named correctly for the release.
 if [ "$GITHUB_REF_TYPE" = "branch" ]; then
   RELEASE_BRANCH_NAME_PATTERN='^release/(.*)$'
 
   if [[ "$GITHUB_REF_NAME" =~ $RELEASE_BRANCH_NAME_PATTERN ]]; then
     BRANCH_VERSION_NUM=${BASH_REMATCH[1]}
 
-    if ! [ $VERSION_NUM = "$BRANCH_VERSION_NUM" ]; then
-      fatal "Project version $VERSION_NUM does not match release branch version $BRANCH_VERSION_NUM"
+    if ! [ "${PROJECT_VERSION_NAME}" = "$BRANCH_VERSION_NUM" ]; then
+      fatal "Project version ${PROJECT_VERSION_NAME} does not match release branch version $BRANCH_VERSION_NUM"
     fi
   fi
 fi
 
-if [ "$CHANGELOG_STATE" = "(open)" ]; then
-  info "Closing changelog"
+# Set the changelog version and close the release.
+java -jar "${CHANGELOG_JAR_NAME}" release-set-version --version "${PROJECT_VERSION_NAME}" --file "${CHANGE_FILE}" ||
+  fatal "Could not set changelog version"
+java -jar "${CHANGELOG_JAR_NAME}" release-finish --file "${CHANGE_FILE}" ||
+  fatal "Could not close changelog"
+git add "${CHANGE_FILE}" ||
+  fatal "Could not add changelog to index"
 
-  java -jar "${CHANGELOG_JAR_NAME}" release-finish --file "${CHANGE_FILE}" ||
-    fatal "Could not close changelog"
-  git add "${CHANGE_FILE}" ||
-    fatal "Could not add changelog to index"
-else
-  info "Changelog is already closed"
-fi
+# Create a tag for the commit.
+TAG_PREFIX=$(head -n 1 ".ci-local/tag-prefix.conf") ||
+  fatal "Could not read .ci-local/tag-prefix.conf"
 
-if [ "$QUALIFIER" = "-SNAPSHOT" ]; then
-  info "Bumping project snapshot version to release version"
+TAG_NAME="${TAG_PREFIX}-${PROJECT_VERSION_NAME}"
 
-  sed -E -i 's/VERSION_NAME=([0-9]+\.[0-9]+\.[0-9]+)-QUALIFIER/VERSION_NAME=\1/' gradle.properties ||
-    fatal "Could not bump project version"
-  git add gradle.properties ||
-    fatal "Could not add gradle.properties to index"
-else
-  info "Project version is already a release version"
-fi
+git commit -m "Finish ${PROJECT_VERSION_NAME} release." ||
+  fatal "Could not commit changes."
+git tag -a "${TAG_NAME}" -m "Release ${PROJECT_VERSION_NAME}" ||
+  fatal "Could not tag release"
+git push origin "${TAG_NAME}" ||
+  fatal "Could not push release tag."
 
-git config --global user.email "palace.ci@thepalaceproject.org" ||
-  fatal "Could not configure git"
-git config --global user.name "Palace CI" ||
-  fatal "Could not configure git"
+# Write the plain text changelog to a file so that the Fastlane deployment can use it.
+RELEASE_NOTES_PATH="changes-${PROJECT_VERSION_NAME}.txt"
 
-if [ "$MAKE_TAG" = "yes" ]; then
-  TAG_TEMPLATE=$(head -n 1 ".ci-local/tag-template.conf") ||
-    fatal "Could not read .ci-local/tag-template.conf"
-
-  TAG_NAME=$(echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/)
-fi
-
-if ! git diff --staged --quiet; then
-  if [[ "$MAKE_TAG" == "yes" && $(git ls-remote --tags origin "$TAG_NAME") ]]; then
-    fatal "Changes are required to finish the release, but the release has already been tagged as $TAG_NAME"
-  fi
-
-  info "Committing and pushing changes"
-
-  git commit -m "Finish $VERSION_NUM release." ||
-    fatal "Could not commit changes"
-  git push ||
-    fatal "Could not push changes"
-else
-  info "No files changed"
-fi
-
-if [ "$MAKE_TAG" = "yes" ]; then
-  if ! [[ $(git ls-remote --tags origin "$TAG_NAME") ]]; then
-    info "Tagging release as $TAG_NAME"
-
-    git tag -a "$TAG_NAME" -m "Release $VERSION_NUM" ||
-      fatal "Could not tag release"
-    git push origin "$TAG_NAME" ||
-      fatal "Could not push release tag"
-  else
-    git fetch origin "refs/tags/$TAG_NAME"
-
-    if ! git diff --quiet FETCH_HEAD HEAD; then
-      fatal "The release has already been tagged, but the tag $TAG_NAME differs from the current HEAD"
-    fi
-
-    info "The release has already been tagged"
-  fi
-fi
-
-RELEASE_NOTES_PATH="changes-${VERSION_NUM}.txt"
-
-ci-changelog.sh "${CHANGELOG_JAR_NAME}" "${CHANGE_FILE}" > $RELEASE_NOTES_PATH ||
+ci-changelog.sh "${CHANGELOG_JAR_NAME}" "${CHANGE_FILE}" > "$RELEASE_NOTES_PATH" ||
   fatal "Could not generate changelog"
 
 echo "RELEASE_NOTES_PATH=$RELEASE_NOTES_PATH" >> $GITHUB_ENV
-echo "VERSION_NUM=$VERSION_NUM" >> $GITHUB_ENV
+echo "VERSION_NUM=$PROJECT_VERSION_NAME" >> $GITHUB_ENV
 echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
