@@ -50,8 +50,8 @@ CHANGE_FILE="README-CHANGES.xml"
 
 #------------------------------------------------------------------------
 
-VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-SNAPSHOT)?$'
-VERSION_NAME=`ci-version.sh` ||
+VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?$'
+VERSION_NAME=$(ci-version.sh) ||
   fatal "Could not determine project version"
 
 if ! [[ $VERSION_NAME =~ $VERSION_NAME_PATTERN ]]; then
@@ -59,10 +59,10 @@ if ! [[ $VERSION_NAME =~ $VERSION_NAME_PATTERN ]]; then
 fi
 
 VERSION_NUM=${BASH_REMATCH[1]}
-SNAPSHOT=${BASH_REMATCH[2]}
+QUALIFIER=${BASH_REMATCH[2]}
 
-CHANGELOG_VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+) \((.*)\)$'
-CHANGELOG_VERSION_NAME=`java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}"` ||
+CHANGELOG_VERSION_NAME_PATTERN='^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+) \((.*)\)$'
+CHANGELOG_VERSION_NAME=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
   fatal "Could not determine changelog version"
 
 if ! [[ $CHANGELOG_VERSION_NAME =~ $CHANGELOG_VERSION_NAME_PATTERN ]]; then
@@ -72,7 +72,7 @@ fi
 CHANGELOG_VERSION_NUM=${BASH_REMATCH[1]}
 CHANGELOG_STATE=${BASH_REMATCH[2]}
 
-if [ $VERSION_NUM = $CHANGELOG_VERSION_NUM ]; then
+if [ "$VERSION_NUM" = "$CHANGELOG_VERSION_NUM" ]; then
   info "Finishing dev cycle for release $VERSION_NUM"
 else
   fatal "Project version $VERSION_NUM does not match changelog version $CHANGELOG_VERSION_NUM"
@@ -101,10 +101,10 @@ else
   info "Changelog is already closed"
 fi
 
-if [ "$SNAPSHOT" = "-SNAPSHOT" ]; then
+if [ "$QUALIFIER" = "-SNAPSHOT" ]; then
   info "Bumping project snapshot version to release version"
 
-  sed -E -i 's/VERSION_NAME=([0-9]+\.[0-9]+\.[0-9]+)-SNAPSHOT/VERSION_NAME=\1/' gradle.properties ||
+  sed -E -i 's/VERSION_NAME=([0-9]+\.[0-9]+\.[0-9]+)-QUALIFIER/VERSION_NAME=\1/' gradle.properties ||
     fatal "Could not bump project version"
   git add gradle.properties ||
     fatal "Could not add gradle.properties to index"
@@ -118,14 +118,14 @@ git config --global user.name "Palace CI" ||
   fatal "Could not configure git"
 
 if [ "$MAKE_TAG" = "yes" ]; then
-  TAG_TEMPLATE=`head -n 1 ".ci-local/tag-template.conf"` ||
+  TAG_TEMPLATE=$(head -n 1 ".ci-local/tag-template.conf") ||
     fatal "Could not read .ci-local/tag-template.conf"
 
-  TAG_NAME=`echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/`
+  TAG_NAME=$(echo $TAG_TEMPLATE | sed 's/${VERSION_NUM}/'${VERSION_NUM}/)
 fi
 
 if ! git diff --staged --quiet; then
-  if [[ "$MAKE_TAG" == "yes" && `git ls-remote --tags origin "$TAG_NAME"` ]]; then
+  if [[ "$MAKE_TAG" == "yes" && $(git ls-remote --tags origin "$TAG_NAME") ]]; then
     fatal "Changes are required to finish the release, but the release has already been tagged as $TAG_NAME"
   fi
 
@@ -140,7 +140,7 @@ else
 fi
 
 if [ "$MAKE_TAG" = "yes" ]; then
-  if ! [[ `git ls-remote --tags origin "$TAG_NAME"` ]]; then
+  if ! [[ $(git ls-remote --tags origin "$TAG_NAME") ]]; then
     info "Tagging release as $TAG_NAME"
 
     git tag -a "$TAG_NAME" -m "Release $VERSION_NUM" ||
