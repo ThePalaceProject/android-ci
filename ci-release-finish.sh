@@ -61,15 +61,11 @@ fi
 VERSION_NUM=${BASH_REMATCH[1]}
 QUALIFIER=${BASH_REMATCH[2]}
 
-CHANGELOG_VERSION_NAME_PATTERN='^(([0-9]+\.[0-9]+\.[0-9]+)(-[a-z0-9]+)?) \((.*)\)$'
-CHANGELOG_VERSION_NAME=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
+CHANGELOG_VERSION_TEXT=$(java -jar "${CHANGELOG_JAR_NAME}" release-current --file "${CHANGE_FILE}") ||
   fatal "Could not determine changelog version"
 
-if ! [[ $CHANGELOG_VERSION_NAME =~ $CHANGELOG_VERSION_NAME_PATTERN ]]; then
-  fatal "Unable to parse changelog version name $CHANGELOG_VERSION_NAME"
-fi
-
-CHANGELOG_STATE=${BASH_REMATCH[2]}
+CHANGELOG_VERSION_NAME=$(echo "${CHANGELOG_VERSION_TEXT}" | awk  '{print $1}')
+CHANGELOG_STATE=$(echo "${CHANGELOG_VERSION_TEXT}" | awk  '{print $2}')
 
 if [ "${VERSION_NAME}" = "$CHANGELOG_VERSION_NAME" ]; then
   info "Finishing dev cycle for release ${VERSION_NAME}"
