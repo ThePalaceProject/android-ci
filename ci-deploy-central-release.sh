@@ -88,6 +88,8 @@ info "Uploading content to repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}"
 
 (cat <<EOF
 upload
+--verbose
+debug
 --baseURI
 https://s01.oss.sonatype.org/
 --stagingProfileId
