@@ -20,29 +20,45 @@ info()
   echo "ci-credentials.sh: info: $1" 1>&2
 }
 
+error()
+{
+  echo "ci-credentials.sh: error: $1" 1>&2
+}
+
 #------------------------------------------------------------------------
 # Check environment
 #
 
+FAILED=0
 if [ -z "${MAVEN_CENTRAL_USERNAME}" ]
 then
-  fatal "MAVEN_CENTRAL_USERNAME is not defined"
+  error "MAVEN_CENTRAL_USERNAME is not defined"
+  FAILED=1
 fi
 if [ -z "${MAVEN_CENTRAL_PASSWORD}" ]
 then
-  fatal "MAVEN_CENTRAL_PASSWORD is not defined"
+  error "MAVEN_CENTRAL_PASSWORD is not defined"
+  FAILED=1
 fi
 if [ -z "${MAVEN_CENTRAL_STAGING_PROFILE_ID}" ]
 then
-  fatal "MAVEN_CENTRAL_STAGING_PROFILE_ID is not defined"
+  error "MAVEN_CENTRAL_STAGING_PROFILE_ID is not defined"
+  FAILED=1
 fi
 if [ -z "${MAVEN_CENTRAL_SIGNING_KEY_ID}" ]
 then
-  fatal "MAVEN_CENTRAL_SIGNING_KEY_ID is not defined"
+  error "MAVEN_CENTRAL_SIGNING_KEY_ID is not defined"
+  FAILED=1
 fi
 if [ -z "${CI_GITHUB_ACCESS_TOKEN}" ]
 then
-  fatal "CI_GITHUB_ACCESS_TOKEN is not defined"
+  error "CI_GITHUB_ACCESS_TOKEN is not defined"
+  FAILED=1
+fi
+
+if [ ${FAILED} -eq 1 ]
+then
+  fatal "One or more required variables are not defined."
 fi
 
 #------------------------------------------------------------------------
