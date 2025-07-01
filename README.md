@@ -1,4 +1,4 @@
-Simplified-Android-CI
+Android-CI
 =======================
 
 The [Palace Project](https://thepalaceproject.org/) CI scripts.
