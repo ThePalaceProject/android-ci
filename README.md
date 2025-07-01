@@ -112,7 +112,7 @@ jobs:
           MAVEN_CENTRAL_PASSWORD:           ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           MAVEN_CENTRAL_STAGING_PROFILE_ID: '3dbb9c4528708261'
           MAVEN_CENTRAL_SIGNING_KEY_ID:     'c8d9e0c27090998d'
-          NYPL_GITHUB_ACCESS_TOKEN:         ${{ secrets.NYPL_GITHUB_ACCESS_TOKEN }}
+          CI_GITHUB_ACCESS_TOKEN:         ${{ secrets.CI_GITHUB_ACCESS_TOKEN }}
         run: .ci/ci-main.sh normal
 ```
 
@@ -187,7 +187,7 @@ $ git add .ci-local
 $ git commit -m 'Configured CI'
 ```
 
-The above set of configuration files will cause binaries to be published to the `NYPL-Simplified/android-binaries`
+The above set of configuration files will cause binaries to be published to the `ThePalaceProject/android-binaries`
 repository on GitHub, on branch `main`. The file `app/version.properties` will be examined and
 is expected to be a [Java properties](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Properties.html)
 file containing a `versionCode` key indicating the version code of the APK files being published.
