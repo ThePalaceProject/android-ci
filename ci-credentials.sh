@@ -85,23 +85,10 @@ echo "Test" > hello.txt || fatal "Could not create test file"
 gpg --sign -a hello.txt || fatal "Could not produce test signature"
 
 #------------------------------------------------------------------------
-# Download Brooklime if necessary.
+# Download jreleaser if necessary.
 #
 
-BROOKLIME_URL="https://repo1.maven.org/maven2/com/io7m/brooklime/com.io7m.brooklime.cmdline/2.0.1/com.io7m.brooklime.cmdline-2.0.1-main.jar"
-BROOKLIME_SHA256_EXPECTED="eb77e7459f3ece239f68e0b634be6cf9f8b57d6c18f0a2bce1cd6a06c611a3ff"
-
-wget -O "brooklime.jar.tmp" "${BROOKLIME_URL}" || fatal "Could not download brooklime"
-mv "brooklime.jar.tmp" "brooklime.jar" || fatal "Could not rename brooklime"
-
-BROOKLIME_SHA256_RECEIVED=$(openssl sha256 "brooklime.jar" | awk '{print $NF}') || fatal "Could not checksum brooklime.jar"
-
-if [ "${BROOKLIME_SHA256_EXPECTED}" != "${BROOKLIME_SHA256_RECEIVED}" ]
-then
-  fatal "brooklime.jar checksum does not match.
-  Expected: ${BROOKLIME_SHA256_EXPECTED}
-  Received: ${BROOKLIME_SHA256_RECEIVED}"
-fi
+ci-install-jreleaser.sh || fatal "Failed to install jreleaser"
 
 #------------------------------------------------------------------------
 # Download changelog if necessary.

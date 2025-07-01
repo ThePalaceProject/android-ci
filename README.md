@@ -1,24 +1,16 @@
 Simplified-Android-CI
 =======================
 
-The NYPL's [Library Simplified](http://www.librarysimplified.org/) CI scripts.
+The [Palace Project](https://thepalaceproject.org/) CI scripts.
 
 ![ci](./readme.jpg?raw=true)
 
 _Image by [Nowaja](https://pixabay.com/users/nowaja-9363663/) from [Pixabay](https://pixabay.com/photos/handicraft-weaving-loom-wool-work-4388501/)_
 
-|Project|Status|
-|-------|------|
-|[Simplified-Android-Core](https://www.github.com/NYPL-Simplified/Simplified-Android-Core)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-Core/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-Core/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[Simplified-Android-HTTP](https://www.github.com/NYPL-Simplified/Simplified-Android-HTTP)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-Android-HTTP/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-Android-HTTP/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[Simplified-R2-Android](https://www.github.com/NYPL-Simplified/Simplified-R2-Android)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/Simplified-R2-Android/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/Simplified-R2-Android/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-|[audiobook-android](https://www.github.com/NYPL-Simplified/audiobook-android)|[![Build Status](https://img.shields.io/github/workflow/status/NYPL-Simplified/audiobook-android/Android%20CI%20(Authenticated)?style=flat-square)](https://github.com/NYPL-Simplified/audiobook-android/actions?query=workflow%3A%22Android+CI+%28Authenticated%29%22)|
-
 ### What Is This?
 
 The contents of this repository define the CI scripts used to continuously
-build the various [Library Simplified](http://www.librarysimplified.org/)
-Android modules.
+build the various [Palace Project](https://thepalaceproject.org/) Android modules.
 
 ### Features
 
@@ -34,7 +26,7 @@ Android modules.
 First, add the CI scripts to your project as a Git submodule in a `.ci` directory:
 
 ```
-$ git submodule add https://www.github.com/NYPL-Simplified/Simplified-Android-CI .ci
+$ git submodule add https://github.com/ThePalaceProject/android-ci .ci
 ```
 
 Per-project configuration data is expected to be placed into a `.ci-local` directory
@@ -60,8 +52,8 @@ The scripts expect your Gradle project to accept the following project propertie
 
 |Property                                 |Value         |Description|
 |-----------------------------------------|--------------|-----------|
-|`org.librarysimplified.no_signing`       |`true`/`false`|If `true`, no PGP signing of artifacts will occur|
-|`org.librarysimplified.directory.publish`|Any path      |If set, artifacts will be published to the named directory in Maven repository format|
+|`org.thepalaceproject.no_signing`       |`true`/`false`|If `true`, no PGP signing of artifacts will occur|
+|`org.thepalaceproject.directory.publish`|Any path      |If set, artifacts will be published to the named directory in Maven repository format|
 |`mavenCentralUsername`                   |Any string    |The username used to publish to Maven Central|
 |`mavenCentralPassword`                   |Any string    |The password used to publish to Maven Central|
 
@@ -160,13 +152,13 @@ is published to Maven Central.
 The build scripts require the following environment variables to be defined when executing
 a `normal` build. Executing a `pull-request` build does not require any particular environment.
 
-|Name                              |Description|
-|----------------------------------|-----------|
-|`MAVEN_CENTRAL_USERNAME`          |The username used to publish binaries to Maven Central|
-|`MAVEN_CENTRAL_PASSWORD`          |The password used to publish binaries to Maven Central|
-|`MAVEN_CENTRAL_STAGING_PROFILE_ID`|The staging profile used to publish binaries to Maven Central|
-|`MAVEN_CENTRAL_SIGNING_KEY_ID`    |The ID of the PGP key used to sign binaries for Maven Central|
-|`NYPL_GITHUB_ACCESS_TOKEN`        |A GitHub access token used to access private NYPL repositories|
+| Name                               |Description|
+|------------------------------------|-----------|
+| `MAVEN_CENTRAL_USERNAME`           |The username used to publish binaries to Maven Central|
+| `MAVEN_CENTRAL_PASSWORD`           |The password used to publish binaries to Maven Central|
+| `MAVEN_CENTRAL_STAGING_PROFILE_ID` |The staging profile used to publish binaries to Maven Central|
+| `MAVEN_CENTRAL_SIGNING_KEY_ID`     |The ID of the PGP key used to sign binaries for Maven Central|
+| `CI_GITHUB_ACCESS_TOKEN`           |A GitHub access token used to access private repositories|
 
 These values should be stored in GitHub Actions _secrets_ and passed in as shown in the
 example workflows above.
@@ -187,20 +179,20 @@ and the rest of the file is ignored. For example, to set up publishing to a remo
 do the following:
 
 ```
-$ echo 'https://github.com/NYPL-Simplified/Simplified-Android-SimplyE' > .ci-local/deploy-git-binary-source.conf
-$ echo 'NYPL-Simplified/android-binaries' > .ci-local/deploy-git-binary-target.conf
+$ echo 'https://github.com/ThePalaceProject/android-core' > .ci-local/deploy-git-binary-source.conf
+$ echo 'ThePalaceProject/android-binaries' > .ci-local/deploy-git-binary-target.conf
 $ echo 'app/version.properties' > .ci-local/deploy-git-binary-version-file.conf
-$ echo 'SimplyE' > .ci-local/deploy-git-binary-branch.conf
+$ echo 'main' > .ci-local/deploy-git-binary-branch.conf
 $ git add .ci-local
 $ git commit -m 'Configured CI'
 ```
 
 The above set of configuration files will cause binaries to be published to the `NYPL-Simplified/android-binaries`
-repository on GitHub, on branch `SimplyE`. The file `app/version.properties` will be examined and
+repository on GitHub, on branch `main`. The file `app/version.properties` will be examined and
 is expected to be a [Java properties](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Properties.html)
 file containing a `versionCode` key indicating the version code of the APK files being published.
 The commit made in the remote repository will contain a link back to the repository
-`https://github.com/NYPL-Simplified/Simplified-Android-SimplyE`, showing the exact commit that
+`https://github.com/ThePalaceProject/android-core`, showing the exact commit that
 produced the binaries.
 
 The possible configuration files are as follows:
@@ -221,8 +213,8 @@ must contain the following files:
 
 |File|Description|
 |----|-----------|
-|`firebase-aab.conf`|The name of the AAB file to be deployed (such as `org.librarysimplified.testing.app/build/outputs/aab/release/org.librarysimplified.testing.app-release-unsigned.aab`)|
-|`firebase-apk.conf`|The name of the APK file to be deployed (such as `org.librarysimplified.testing.app/build/outputs/apk/release/org.librarysimplified.testing.app-release-unsigned.apk`)|
+|`firebase-aab.conf`|The name of the AAB file to be deployed (such as `org.thepalaceproject.testing.app/build/outputs/aab/release/org.thepalaceproject.testing.app-release-unsigned.aab`)|
+|`firebase-apk.conf`|The name of the APK file to be deployed (such as `org.thepalaceproject.testing.app/build/outputs/apk/release/org.thepalaceproject.testing.app-release-unsigned.apk`)|
 |`firebase-app-id.conf`|The application ID to be deployed (such as `1:1076330259269:android:8cb4dc8d0e14bc32d3d42c`)|
 |`firebase-groups.conf`|The name(s) of the testing group(s) to notify (such as `beta-testers`)|
 

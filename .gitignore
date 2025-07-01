@@ -8,3 +8,5 @@ hello.txt
 hello.txt.asc
 node_modules
 package-lock.json
+jreleaser
+jreleaser*.zip
