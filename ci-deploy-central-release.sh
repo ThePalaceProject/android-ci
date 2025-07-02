@@ -29,6 +29,12 @@ then
   exit 0
 fi
 
+if [ ! -f "jreleaser.toml" ]
+then
+  info "jreleaser.toml does not exist"
+  exit 1
+fi
+
 #------------------------------------------------------------------------
 # Publish the built artifacts to wherever they need to go.
 #
@@ -61,97 +67,10 @@ fi
 # Create a staging repository on Maven Central.
 #
 
-info "Creating a staging repository on Maven Central"
+info "Executing jreleaser"
 
-(cat <<EOF
-create
---baseURI
-https://s01.oss.sonatype.org/
---description
-ThePalaceProject ${TIMESTAMP}
---stagingProfileId
-${MAVEN_CENTRAL_STAGING_PROFILE_ID}
---user
-${MAVEN_CENTRAL_USERNAME}
---password
-${MAVEN_CENTRAL_PASSWORD}
-EOF
-) > args.txt || fatal "Could not write argument file"
-
-MAVEN_CENTRAL_STAGING_REPOSITORY_ID=$(java -jar brooklime.jar @args.txt) || fatal "Could not create staging repository"
-
-#------------------------------------------------------------------------
-# Upload content to the staging repository on Maven Central.
-#
-
-info "Uploading content to repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}"
-
-(cat <<EOF
-upload
---verbose
-debug
---baseURI
-https://s01.oss.sonatype.org/
---stagingProfileId
-${MAVEN_CENTRAL_STAGING_PROFILE_ID}
---user
-${MAVEN_CENTRAL_USERNAME}
---password
-${MAVEN_CENTRAL_PASSWORD}
---directory
-${DEPLOY_DIRECTORY}
---repository
-${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}
---quiet
-EOF
-) > args.txt || fatal "Could not write argument file"
-
-java -jar brooklime.jar @args.txt || fatal "Could not upload content"
-
-#------------------------------------------------------------------------
-# Close the staging repository.
-#
-
-info "Closing repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}. This can take a few minutes."
-
-(cat <<EOF
-close
---baseURI
-https://s01.oss.sonatype.org/
---stagingProfileId
-${MAVEN_CENTRAL_STAGING_PROFILE_ID}
---user
-${MAVEN_CENTRAL_USERNAME}
---password
-${MAVEN_CENTRAL_PASSWORD}
---repository
-${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}
-EOF
-) > args.txt || fatal "Could not write argument file"
-
-java -jar brooklime.jar @args.txt || fatal "Could not close staging repository"
-
-#------------------------------------------------------------------------
-# Release the staging repository.
-#
-
-info "Releasing repository ${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}"
-
-(cat <<EOF
-release
---baseURI
-https://s01.oss.sonatype.org/
---stagingProfileId
-${MAVEN_CENTRAL_STAGING_PROFILE_ID}
---user
-${MAVEN_CENTRAL_USERNAME}
---password
-${MAVEN_CENTRAL_PASSWORD}
---repository
-${MAVEN_CENTRAL_STAGING_REPOSITORY_ID}
-EOF
-) > args.txt || fatal "Could not write argument file"
-
-java -jar brooklime.jar @args.txt || fatal "Could not release staging repository"
-
-info "Release completed"
+env \
+JRELEASER_MAVENCENTRAL_USERNAME="${MAVEN_CENTRAL_USERNAME}" \
+JRELEASER_MAVENCENTRAL_PASSWORD="${MAVEN_CENTRAL_PASSWORD}" \
+./jreleaser deploy --config-file=jreleaser.toml ||
+  fatal "jreleaser failed"
