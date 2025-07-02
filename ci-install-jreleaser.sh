@@ -48,3 +48,6 @@ mv "${JRELEASER_ROOT_DIRECTORY}/bin/jreleaser" . ||
   fatal "Could not move jreleaser"
 chmod 0755 jreleaser ||
   fatal "Could not ensure jreleaser is executable"
+
+./jreleaser --version ||
+  fatal "Could not run jreleaser --version"
