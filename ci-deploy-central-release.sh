@@ -43,9 +43,6 @@ JRELEASER_PROJECT_JAVA_GROUP_ID=$(cat gradle.properties | sed -n 's/^GROUP=\(.*\
 JRELEASER_PROJECT_VERSION=$(cat gradle.properties | sed -n 's/^VERSION_NAME=\(.*\)$/\1/p') ||
   fatal "Could not determine version"
 
-export JRELEASER_PROJECT_JAVA_GROUP_ID
-export JRELEASER_PROJECT_VERSION
-
 #------------------------------------------------------------------------
 # Publish the built artifacts to wherever they need to go.
 #
@@ -83,5 +80,7 @@ info "Executing jreleaser"
 env \
 JRELEASER_MAVENCENTRAL_USERNAME="${MAVEN_CENTRAL_USERNAME}" \
 JRELEASER_MAVENCENTRAL_PASSWORD="${MAVEN_CENTRAL_PASSWORD}" \
-./jreleaser deploy --config-file=jreleaser.toml ||
+JRELEASER_PROJECT_JAVA_GROUP_ID="${JRELEASER_PROJECT_JAVA_GROUP_ID}" \
+JRELEASER_PROJECT_VERSION="${JRELEASER_PROJECT_VERSION}" \
+./jreleaser/bin/jreleaser deploy --config-file=jreleaser.toml ||
   fatal "jreleaser failed"

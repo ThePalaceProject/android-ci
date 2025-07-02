@@ -21,9 +21,9 @@ info()
 #------------------------------------------------------------------------
 
 JRELEASER_VERSION="1.19.0"
-JRELEASER_URL="https://github.com/jreleaser/jreleaser/releases/download/v${JRELEASER_VERSION}/jreleaser-native-${JRELEASER_VERSION}-linux-x86_64.zip"
-JRELEASER_SHA256_EXPECTED="2f30c3141cf5a0a9c018ca96f904ff8cfb278092a275054365ec84d6144baddf"
-JRELEASER_ROOT_DIRECTORY="jreleaser-native-${JRELEASER_VERSION}-linux-x86_64"
+JRELEASER_URL="https://github.com/jreleaser/jreleaser/releases/download/v${JRELEASER_VERSION}/jreleaser-${JRELEASER_VERSION}.zip"
+JRELEASER_SHA256_EXPECTED="5a20df93b51654f6a06984a587e4c3595f5746b95f202b571d707315a2191efe"
+JRELEASER_ROOT_DIRECTORY="jreleaser-${JRELEASER_VERSION}"
 
 wget -O "jreleaser.zip.tmp" "${JRELEASER_URL}" ||
   fatal "Could not download jreleaser"
@@ -44,10 +44,7 @@ rm -rfv "${JRELEASER_ROOT_DIRECTORY}" ||
   fatal "Could not remove old jreleaser directory"
 unzip jreleaser.zip ||
   fatal "Could not unzip jreleaser"
-mv "${JRELEASER_ROOT_DIRECTORY}/bin/jreleaser" . ||
+mv "${JRELEASER_ROOT_DIRECTORY}" jreleaser ||
   fatal "Could not move jreleaser"
-chmod 0755 jreleaser ||
-  fatal "Could not ensure jreleaser is executable"
-
-./jreleaser --version ||
+./jreleaser/bin/jreleaser --version ||
   fatal "Could not run jreleaser --version"
