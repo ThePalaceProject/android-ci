@@ -36,6 +36,17 @@ then
 fi
 
 #------------------------------------------------------------------------
+# Extract group and version information
+
+JRELEASER_PROJECT_JAVA_GROUP_ID=$(cat gradle.properties | sed -n 's/^GROUP=\(.*\)$/\1/p') ||
+  fatal "Could not determine group ID"
+JRELEASER_PROJECT_VERSION=$(cat gradle.properties | sed -n 's/^VERSION_NAME=\(.*\)$/\1/p') ||
+  fatal "Could not determine version"
+
+export JRELEASER_PROJECT_JAVA_GROUP_ID
+export JRELEASER_PROJECT_VERSION
+
+#------------------------------------------------------------------------
 # Publish the built artifacts to wherever they need to go.
 #
 
