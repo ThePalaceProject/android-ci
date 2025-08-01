@@ -59,5 +59,5 @@ mkdir -p ${CI_CHANGELOG_OUTPUT_DIRECTORY} ||
 echo "For the full list of changes in this release, visit ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${TAG_NAME}." > "${CI_CHANGELOG_OUTPUT_FILE}" ||
   fatal "could not generate changelog"
 
-bundle exec fastlane supply --aab "${CI_FASTLANE_AAB}" --track alpha < /dev/null ||
+bundle exec fastlane supply --aab "${CI_FASTLANE_AAB}" --track production --release-status draft < /dev/null ||
   fatal "could not upload AAB"
