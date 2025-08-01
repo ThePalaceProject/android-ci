@@ -50,5 +50,5 @@ done
 CI_FASTLANE_APK=$(head -n 1 "fastlane-apk.conf") ||
   fatal "could not read fastlane-apk.conf"
 
-bundle exec fastlane supply --apk "${CI_FASTLANE_APK}" --track alpha < /dev/null ||
+bundle exec fastlane supply --apk "${CI_FASTLANE_APK}" --track alpha --release-status draft < /dev/null ||
   fatal "could not upload APK"
