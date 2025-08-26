@@ -69,11 +69,11 @@ then
 
   case ${BUILD_TYPE} in
     normal)
-      mvn clean verify
+      mvn clean verify || fatal "Could not build"
       ;;
 
     pull-request)
-      mvn clean verify
+      mvn clean verify || fatal "Could not build"
       ;;
   esac
 
