@@ -32,27 +32,52 @@ fi
 
 info "Executing build in '${BUILD_TYPE}' mode"
 
-JVM_ARGUMENTS="-Xmx4096m -XX:+PrintGC -XX:+PrintGCDetails -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+if [ -f "gradle.properties" ]
+then
+  JVM_ARGUMENTS="-Xmx4096m -XX:+PrintGC -XX:+PrintGCDetails -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
 
-info "Gradle JVM arguments: ${JVM_ARGUMENTS}"
+  info "gradle.properties exists; executing a Gradle build."
+  info "Gradle JVM arguments: ${JVM_ARGUMENTS}"
 
-case ${BUILD_TYPE} in
-  normal)
-    ./gradlew \
-      -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
-      -Dorg.gradle.daemon=false \
-      -Dorg.gradle.parallel=false \
-      -Dorg.gradle.internal.publish.checksums.insecure=true \
-      assemble test verifySemanticVersioning || fatal "could not build"
-    ;;
+  case ${BUILD_TYPE} in
+    normal)
+      ./gradlew \
+        -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
+        -Dorg.gradle.daemon=false \
+        -Dorg.gradle.parallel=false \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
+        assemble test verifySemanticVersioning || fatal "could not build"
+      ;;
 
-  pull-request)
-    ./gradlew \
-      -Porg.librarysimplified.no_signing=true \
-      -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
-      -Dorg.gradle.daemon=false \
-      -Dorg.gradle.parallel=false \
-      -Dorg.gradle.internal.publish.checksums.insecure=true \
-      assemble test verifySemanticVersioning || fatal "could not build"
-    ;;
-esac
+    pull-request)
+      ./gradlew \
+        -Porg.librarysimplified.no_signing=true \
+        -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
+        -Dorg.gradle.daemon=false \
+        -Dorg.gradle.parallel=false \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
+        assemble test verifySemanticVersioning || fatal "could not build"
+      ;;
+  esac
+
+  exit 0
+fi
+
+if [ -f "pom.xml" ]
+then
+  info "pom.xml exists; executing a Maven build."
+
+  case ${BUILD_TYPE} in
+    normal)
+      mvn clean verify
+      ;;
+
+    pull-request)
+      mvn clean verify
+      ;;
+  esac
+
+  exit 0
+fi
+
+fatal "Could not determine the project build type."
