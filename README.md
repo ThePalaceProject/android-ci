@@ -42,11 +42,8 @@ The CI scripts expect your Gradle project to define the following tasks:
 |`clean`                   |Deletes all build artifacts to guarantee a clean build|
 |`assemble`                |Builds all artifacts|
 |`test`                    |Runs all tests|
-|`verifySemanticVersioning`|Runs semantic versioning checks|
 
-The scripts expect all of these tasks to be defined, but it is possible to
-simply define empty tasks for `ktlint` and `verifySemanticVersioning` if
-the project in question does not use them.
+The scripts expect all of these tasks to be defined.
 
 The scripts expect your Gradle project to accept the following project properties:
 

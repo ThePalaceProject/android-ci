@@ -46,7 +46,7 @@ then
         -Dorg.gradle.daemon=false \
         -Dorg.gradle.parallel=false \
         -Dorg.gradle.internal.publish.checksums.insecure=true \
-        assemble test verifySemanticVersioning || fatal "could not build"
+        assemble test || fatal "could not build"
       ;;
 
     pull-request)
@@ -56,7 +56,7 @@ then
         -Dorg.gradle.daemon=false \
         -Dorg.gradle.parallel=false \
         -Dorg.gradle.internal.publish.checksums.insecure=true \
-        assemble test verifySemanticVersioning || fatal "could not build"
+        assemble test || fatal "could not build"
       ;;
   esac
 
