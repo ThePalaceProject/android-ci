@@ -65,6 +65,7 @@ info "Executing tagged release deployment"
   publish || fatal "Could not publish"
 
 info "Checking signatures were created"
+find "${DEPLOY_DIRECTORY}" -type f -name '*.asc' || true
 SIGNATURE_COUNT=$(find "${DEPLOY_DIRECTORY}" -type f -name '*.asc' | wc -l) || fatal "Could not list signatures"
 info "Generated ${SIGNATURE_COUNT} signatures"
 if [ "${SIGNATURE_COUNT}" -lt 2 ]
