@@ -42,6 +42,7 @@ then
   case ${BUILD_TYPE} in
     normal)
       ./gradlew \
+        -Porg.thepalaceproject.build.enableSigning=true \
         -Dorg.gradle.jvmargs="${JVM_ARGUMENTS}" \
         -Dorg.gradle.daemon=false \
         -Dorg.gradle.parallel=false \

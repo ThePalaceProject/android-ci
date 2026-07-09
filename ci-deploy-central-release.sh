@@ -54,6 +54,7 @@ mkdir -p "${DEPLOY_DIRECTORY}" || fatal "Could not create a temporary directory"
 
 info "Executing tagged release deployment"
 ./gradlew \
+  -Porg.thepalaceproject.build.enableSigning=true \
   -PmavenCentralUsername="${MAVEN_CENTRAL_USERNAME}" \
   -PmavenCentralPassword="${MAVEN_CENTRAL_PASSWORD}" \
   -Psigning.gnupg.executable=gpg \
