@@ -74,6 +74,15 @@ then
 fi
 
 #------------------------------------------------------------------------
+# Remove the checksums of the GPG signature files. Maven Central does not
+# require .asc.md5 / .asc.sha1; dropping them reduces the published file count
+# with no loss of integrity information.
+#
+
+info "Removing .asc.md5 / .asc.sha1 signature-checksum files"
+find "${DEPLOY_DIRECTORY}" -type f \( -name '*.asc.md5' -o -name '*.asc.sha1' \) -delete
+
+#------------------------------------------------------------------------
 # Create a staging repository on Maven Central.
 #
 
