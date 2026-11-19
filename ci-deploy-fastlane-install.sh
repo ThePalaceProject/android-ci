@@ -45,6 +45,13 @@ done
 gem install --user-install bundler -v 2.6.7 ||
   fatal "could not install bundler"
 
+# Install gems into a project-local directory rather than the system gem
+# directory, which the CI user has no write access to. The setting is
+# persisted to .bundle/config so that the later `bundle exec` invocations
+# (ci-deploy-fastlane-aab.sh / ci-deploy-fastlane-apk.sh) use the same path.
+bundle config set --local path "vendor/bundle" ||
+  fatal "could not configure the bundler install path"
+
 bundle install ||
   fatal "could not install fastlane"
 
